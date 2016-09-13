@@ -43,7 +43,6 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_GET(self):
         """Serve a GET request."""
         f = self.send_head()
-        print f
         if f:
             try:
                 self.copyfile(f, self.wfile)
@@ -174,7 +173,6 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             path = os.path.join(path, word)
         if trailing_slash:
             path += '/'
-        print path
         return path
 
     def copyfile(self, source, outputfile):

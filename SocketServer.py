@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 """Generic socket server classes.
 
 This module tries to capture the various aspects of defining a server:
@@ -17,10 +20,10 @@ For request-based servers (including socket-based):
 - client address verification before further looking at the request
         (This is actually a hook for any processing that needs to look
          at the request before anything else, e.g. logging)
-- how to handle multiple requests:
-        - synchronous (one request is handled at a time)
-        - forking (each request is handled by a new process)
-        - threading (each request is handled by a new thread)
+- how to handle multiple requests:                                  // 如何处理多个请求
+        - synchronous (one request is handled at a time)            // - 同步 (一次处理一个请求)
+        - forking (each request is handled by a new process)        // - forking (每个请求用一个进程)
+        - threading (each request is handled by a new thread)       // - 线程 (每个请求开启一条新线程)
 
 The classes in this module favor the server type that is simplest to
 write: a synchronous TCP/IP server.  This is bad class design, but
@@ -161,7 +164,7 @@ class BaseServer:
 
     """Base class for server classes.
 
-    Methods for the caller:
+    Methods for the caller:                                  // 调用函数
 
     - __init__(server_address, RequestHandlerClass)
     - serve_forever(poll_interval=0.5)
@@ -169,7 +172,7 @@ class BaseServer:
     - handle_request()  # if you do not use serve_forever()
     - fileno() -> int   # for select()
 
-    Methods that may be overridden:
+    Methods that may be overridden:                          // 可能需要重写的方法
 
     - server_bind()
     - server_activate()
@@ -182,11 +185,11 @@ class BaseServer:
     - close_request(request)
     - handle_error()
 
-    Methods for derived classes:
+    Methods for derived classes:                         // 类 继承方法                         
 
     - finish_request(request, client_address)
 
-    Class variables that may be overridden by derived classes or
+    Class variables that may be overridden by derived classes or  // 通过继承或实例 可能需要重写的成员变量
     instances:
 
     - timeout
@@ -194,7 +197,7 @@ class BaseServer:
     - socket_type
     - allow_reuse_address
 
-    Instance variables:
+    Instance variables:                                       // 实例变量
 
     - RequestHandlerClass
     - socket
@@ -710,9 +713,10 @@ class StreamRequestHandler(BaseRequestHandler):
             try:
                 self.wfile.flush()
             except socket.error:
-                # An final socket error may have occurred here, such as
+                # An final socket error may have occclose_requesturred here, such as
                 # the local error ECONNABORTED.
                 pass
+        print 'finish'
         self.wfile.close()
         self.rfile.close()
 
@@ -734,4 +738,5 @@ class DatagramRequestHandler(BaseRequestHandler):
         self.wfile = StringIO()
 
     def finish(self):
+        print 'ddddddd'
         self.socket.sendto(self.wfile.getvalue(), self.client_address)
